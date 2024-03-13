@@ -1,0 +1,41 @@
+import discord
+import random
+from discord.ext import commands
+from os import listdir
+from random import choice
+from options import TOKEN
+
+intents = discord.Intents.default()
+intents.message_content = True
+
+bot = commands.Bot(command_prefix='/',
+                   intents=intents,
+                   help_command=None)
+
+@bot.command()
+async def mem(ctx):
+    file_name = choice(listdir('images'))
+    with open(f'images/{file_name}', 'rb') as f:
+        picture = discord.File(f)
+    await ctx.send(file=picture)
+
+@bot.command()
+async def mem_for_luck(ctx):
+    image_of_luck = random.randint(1,9)
+
+    if 1 <= image_of_luck <= 5:
+        with open(f'images/mem1.jpg', 'rb') as f:
+            picture = discord.File(f)
+        await ctx.send(file=picture)
+    
+    elif 6 <= image_of_luck <= 8:
+        with open(f'images/mem3.jpg', 'rb') as f:
+            picture = discord.File(f)
+        await ctx.send(file=picture)
+
+    elif image_of_luck == 9:
+        with open(f'images/mem2.jpg', 'rb') as f:
+            picture = discord.File(f)
+        await ctx.send(file=picture)
+
+bot.run(TOKEN)
